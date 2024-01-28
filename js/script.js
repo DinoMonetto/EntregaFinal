@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", function () {
 // Array para almacenar usuarios y contraseñas
 let usuario = [{
     "username": "rulo19",
@@ -90,3 +91,41 @@ document.querySelector(".register").addEventListener("submit", (event) => {
     console.log("Contenido:", JSON.stringify(usuario, null, 2));
 });
 
+obtenerClima();
+
+    // Función para obtener información del clima
+    function obtenerClima() {
+        let apiKey = '19deb3d609ae8fc2ae926d985ae99cfe'; 
+        let ciudad = 'Cordoba,ar';
+
+        let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric`;
+
+        // Realizar la solicitud fetch
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Extraer la informacion
+                let temperatura = data.main.temp;
+                let descripcion = data.weather[0].description;
+
+                // Mostrar la informacion
+                mostrarClima(temperatura, descripcion);
+            })
+            .catch(error => {
+                console.error('Error', error);
+            });
+    }
+
+    // Función para mostrar la información del clima en tu página
+    function mostrarClima(temperatura, descripcion) {
+        console.log('Clima:', temperatura, descripcion);
+
+        let contenedorClima = document.createElement('div');
+        contenedorClima.innerHTML = `Clima actual en Córdoba: ${temperatura}°C, ${descripcion}`;
+        contenedorClima.style.textAlign = 'right';
+        contenedorClima.style.fontSize = '14px';
+        contenedorClima.style.marginTop = '10px';
+
+        document.body.appendChild(contenedorClima);
+    }
+});
